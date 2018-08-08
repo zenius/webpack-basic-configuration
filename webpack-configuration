@@ -11,21 +11,34 @@ To make the configuration steps, let us start step by step.
   It will ask for the settings while initializing, you can keep all the settings to default by simply pressing 'Enter Key'. 
  
  3. Now, configure your 'package.json' file as follows: 
- #package.json:
- 	"build" :  "webpack entryFilePath outputFilePath", 
+  #package.json:
+   
+   i. In your file, find the 'scripts'. 
+   ii. Now, add the following to your 'script' object as follows.
+   
+ 	 "build" : "webpack src/js/app.js dist/bundle.js"   	// "build" :  "webpack entryFilePath outputFilePath"
+   
+   iii. To run the webpack, type the following command in your command line. 
+        npm run build 
+        
+        It will produce the 'bundle.js' file inside the 'dist' folder which you specified in your "build object". 
+    
+    iv. At this point, you can get rid all of the 'js' file you had previously refernce in your '.html' file as follows. 
+        
+        <script src ="dist/bundle.js"></script>   
+    
+    v. For production build, add the following lines in your 'script' object as follows; 
+       
+ 	    "build:prod" : "webpack src/js/app.js dist/bundle.js -p ",   //  "build:prod" : "webpack entryFilePath outputFilePath -p"
 
- 	E.g. "build" : "webpack src/js/app.js dist/bundle.js"
-
- -  To run: npm run build 
- - now place the script file to your index.html file:   <script src ="dist/bundle.js"></script>   
- - For production: 
- 	package.json: 
- 	"build:prod" : "webpack entryFilePath outputFilePath -p", 
- 	E.g. 
- 	"build:prod" : "webpack src/js/app.js dist/bundle.js -p ", 
-
- - To run: npm run build:prod    // it will also minify your bundle.js file 
- - To run a local server and test like in production environment 
+   vi. To run the webpack, type the following command in your command line. 
+       npm run build:prod    
+       
+       Note: 
+       It will also minify your bundle.js file 
+     
+ 
+ To run a local server and test like in production environment 
    npm install --save-dev webpack-dev-server
 
   - now change in package.json: 
