@@ -1,0 +1,85 @@
+To make the configuration steps, let us start step by step. 
+
+1. To install the webpack, run the following command in your command line. 
+  npm install --save-dev webpack 
+  
+2. Then, initialize your npm package, run in command line. 
+ - npm init
+  This wil initialize the 'package.json' file for you. 
+  
+  Note: 
+  It will ask for the settings while initializing, you can keep all the settings to default by simply pressing 'Enter Key'. 
+ 
+ 3. Now, configure your 'package.json' file as follows: 
+ #package.json:
+ 	"build" :  "webpack entryFilePath outputFilePath", 
+
+ 	E.g. "build" : "webpack src/js/app.js dist/bundle.js"
+
+ -  To run: npm run build 
+ - now place the script file to your index.html file:   <script src ="dist/bundle.js"></script>   
+ - For production: 
+ 	package.json: 
+ 	"build:prod" : "webpack entryFilePath outputFilePath -p", 
+ 	E.g. 
+ 	"build:prod" : "webpack src/js/app.js dist/bundle.js -p ", 
+
+ - To run: npm run build:prod    // it will also minify your bundle.js file 
+ - To run a local server and test like in production environment 
+   npm install --save-dev webpack-dev-server
+
+  - now change in package.json: 
+ 	 "build" :  "webpack-dev-server entryFilePath outputFilePath", 
+
+  - You can delete your 'bundle.js' file from 'dist' folder if you want. 
+    [Don't worry!: it will available in the memory]
+
+  - Now, change the following in the 'package.json' 
+     "build" :  "webpack-dev-server --entry ./entryFilePath --output-filename ./outputFilePath", 
+     E.g. 
+     	 "build" :  "webpack-dev-server --entry ./src/js/app.js --output-filename ./dist/bundle.js", 
+
+   - Adding 'webpack.config.js'
+   	  var path =  require('path'); 
+
+   	  module.exports = { 
+   	  	entry: "./src/js/app.js", 
+   	  	output:  {
+   	  		path: path.resolve(__dirname, 'dist'), 
+   	  		filename: 'bundle.js',  
+   	  		publicPath: '/dist'    /*specify the relative path, otherwise you will get error*/
+   	  	}
+   	  };  
+  
+   - then, make changes in 'package.json' file as follows 
+   	"build" :  "webpack-dev-server",
+   	"build:prod" : "webpack-dev-server -p" 
+
+
+   	- Now, let us move to another level, where we will be talking about the 'module loaders': 
+   	  let us try to  bundle the 'style file'(css file), so
+ 
+   	  npm install --save-dev css-loader style-loader
+
+   	- In 'webpack.config.js' file, add this object as below: 
+
+   	  module: {
+   	   		test: /\.css$/,   /*regular expression which ends in .css*/
+   	   		use: [
+   	   		    'style-loader',      /*the module loads the loader in opposite direction*/
+   	   		    'css-loader'     
+   	   		] 
+   	  }
+    
+    - Moving to the final step in the webpack configuration, the topic is:  'plugins'
+      Make the following changes in the 'webpack.config.js' file, 
+
+      var webpack  = require('webpack');   /*add it to the top of the file 'webpack.config.js'*/
+
+      inside module.exports, make this changes, 
+
+      plugins:  [
+      	new webpack.optimize.UglifyJsPlugin({ 
+      		//...
+      	})
+      ]
